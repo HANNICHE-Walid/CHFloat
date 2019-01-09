@@ -1,13 +1,13 @@
 h_float16 float2half(float x){
-	uint32_t *x_bytes;
+	long *x_bytes; //uint32_t
 	
-	uint8_t e;
-	uint32_t m;
+	unsigned char e; //uint8_t 
+	long m; //uint32_t
 	
 	h_float16 y;
 	
 	y=0;
-	x_bytes=&x;  // thnx i know what i'm doing (cast float into bit array "int32")
+	x_bytes=&x;  // (cast float into bit array "int32")
 	e=*x_bytes>>23;//b30-23
 	m=*x_bytes&0x7FFFFFL;//23 bit
 	
@@ -18,7 +18,7 @@ h_float16 float2half(float x){
 		y+=0x7C00;//inf (1F<<10)
 		if (e==255 && m) y++; //NaN
 	}else{
-		if(e>0x70) y+=(uint16_t)(e-0x70)<<10;//exponent
+		if(e>0x70) y+=(h_float16)(e-0x70)<<10;//exponent
 		y+=(m)>>13;//mantis
 		if (m & (1<<12)) y++;//round 
 	}
@@ -26,11 +26,11 @@ h_float16 float2half(float x){
 }
 
 float half2float(h_float16 x){
-	uint32_t x_bytes;
+	long x_bytes; //uint32_t
 	float *f_pointer;
 	
-	uint8_t e;
-	uint16_t m;
+	char e; //uint8_t 
+	short m; //uint16_t
 	
 	x_bytes=0;
 	e=(x>>10)&0x1F;//b14-10
@@ -39,11 +39,11 @@ float half2float(h_float16 x){
 	if (x&1<<15) x_bytes=1L<<31;//sig bit
 	
 	if (e==0||e==0x1F){
-		x_bytes+=(uint32_t)(e)<<23;// zero/inf
+		x_bytes+=(long)(e)<<23;// zero/inf
 		if(m) x_bytes++; //NaN
 		}else{
-		x_bytes+=(uint32_t)(0x70+e)<<23;//exponent
-		x_bytes+=(uint32_t)(m)<<13;//mantis
+		x_bytes+=(long)(0x70+e)<<23;//exponent
+		x_bytes+=(long)(m)<<13;//mantis
 	}
 	f_pointer=&x_bytes;
 	return *f_pointer;
