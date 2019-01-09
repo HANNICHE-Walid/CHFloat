@@ -1,6 +1,4 @@
-
 h_float16 float2half(float x){
-	//float *f_pointer=&x_bytes;
 	uint32_t *x_bytes;
 	
 	uint8_t e;
@@ -17,7 +15,7 @@ h_float16 float2half(float x){
 	
 	
 	if (e>0x8E){
-		y+=0x7C00;//inf (1f<<10)
+		y+=0x7C00;//inf (1F<<10)
 		if (e==255 && m) y++; //NaN
 	}else{
 		if(e>0x70) y+=(uint16_t)(e-0x70)<<10;//exponent
