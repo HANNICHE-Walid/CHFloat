@@ -1,2 +1,2 @@
 # CHFloat
-Half Float (16 bit) &lt;-> Float  conversion 
+Half precision Float (16 bit) &lt;-> Float  conversion 
